@@ -2,6 +2,15 @@ from flask import Flask, render_template, request
 from azure.storage.blob import BlobServiceClient, BlobClient
 import os
 from dotenv import load_dotenv
+import logging
+
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
+
+DEBUG = logger.debug
+INFO = logger.info
+WARNING = logger.warning
+ERROR = logger.error
 
 load_dotenv()  # take environment variables from .env
 
@@ -14,10 +23,12 @@ container_name = os.getenv("AZURE_STORAGE_CONTAINER_NAME")
 
 @app.route('/')
 def index():
+    DEBUG('Index route')
     return render_template('upload.html')
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
+    DEBUG(upload_file)
     if 'file' not in request.files:
         return 'No file part'
     file = request.files['file']
